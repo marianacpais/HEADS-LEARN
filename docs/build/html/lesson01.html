@@ -1,0 +1,549 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="./" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Lesson 01 - Your First ML project in R &#8212; HEADS LEARN v0.1 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=bd9e20870c6007c4c509" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=bd9e20870c6007c4c509" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=bd9e20870c6007c4c509" rel="stylesheet" />
+
+  
+  <link href="_static/vendor/fontawesome/6.5.1/css/all.min.css?digest=bd9e20870c6007c4c509" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.1/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.1/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.1/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=384b581d" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=bd9e20870c6007c4c509" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=bd9e20870c6007c4c509" />
+  <script src="_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=bd9e20870c6007c4c509"></script>
+
+    <script src="_static/documentation_options.js?v=d3792fb7"></script>
+    <script src="_static/doctools.js?v=888ff710"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?v=efea14e4"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'lesson01';</script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Lesson 02 - Supervised Machine Learning - Decision Trees" href="lesson02.html" />
+    <link rel="prev" title="Welcome to HEADS LEARN" href="index.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a id="pst-skip-link" class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <header>
+  
+    <div class="bd-header navbar navbar-expand-lg bd-navbar">
+    </div>
+  
+  </header>
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">HEADS LEARN v0.1 documentation</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Lesson 01 - Your First ML project in R</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lesson02.html">Lesson 02 - Supervised Machine Learning - Decision Trees</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lesson03.html">Lesson 03 - Graphical Models - Bayesian Networks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lesson04.html">Lesson 04 - Supervised Machine Learning - Support Vector Machines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lesson05.html">Lesson 05 - Supervised Machine Learning - Artificial Neural Networks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lesson06.html">Lesson 06 - Ensemble Models - Bagging, Boosting and Reliability</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lesson07.html">Lesson 07 - Unsupervised Machine Learning - Clustering and Association Rules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lesson08.html">Lesson 08 - Unsupervised Machine Learning - Data Preprocessing and Anomaly Detection</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lesson09.html">Lesson 09 - Machine Learning from Data Streams</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lesson10.html">Lesson 10 - Visual Data Mining</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lesson11.html">Lesson 11 - Deep Learning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lesson12.html">Lesson 12 - Text Mining</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="_sources/lesson01.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Lesson 01 - Your First ML project in R</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ml-and-data-mining-start-your-engines">ML and Data Mining - Start your engines!</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#summary">Summary</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#learning-and-evaluating-classifiers-validation-and-generalization-of-models">Learning and evaluating classifiers - Validation and generalization of models</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Summary</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#model-generalization">Model Generalization</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#evaluating-predictive-models">Evaluating Predictive Models</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="lesson-01-your-first-ml-project-in-r">
+<h1>Lesson 01 - Your First ML project in R<a class="headerlink" href="#lesson-01-your-first-ml-project-in-r" title="Link to this heading">#</a></h1>
+<section id="ml-and-data-mining-start-your-engines">
+<h2>ML and Data Mining - Start your engines!<a class="headerlink" href="#ml-and-data-mining-start-your-engines" title="Link to this heading">#</a></h2>
+<section id="summary">
+<h3>Summary<a class="headerlink" href="#summary" title="Link to this heading">#</a></h3>
+<p><strong>Data Mining Process</strong></p>
+<p><img alt="alt text" src="_images/image_1.1.png" /></p>
+<p><strong>Data Science Lifecycle</strong></p>
+<p>“The lifecycle of a data science project is not definitive and can be altered accordingly to improve the efficiency of a specific data science project as per the research requirements.”
+DeZyre (2016)</p>
+</section>
+</section>
+<section id="learning-and-evaluating-classifiers-validation-and-generalization-of-models">
+<h2>Learning and evaluating classifiers - Validation and generalization of models<a class="headerlink" href="#learning-and-evaluating-classifiers-validation-and-generalization-of-models" title="Link to this heading">#</a></h2>
+<section id="id1">
+<h3>Summary<a class="headerlink" href="#id1" title="Link to this heading">#</a></h3>
+<section id="model-generalization">
+<h4>Model Generalization<a class="headerlink" href="#model-generalization" title="Link to this heading">#</a></h4>
+<ul class="simple">
+<li><p><strong>Overfitting</strong>: We say that the model is overfitting, that is, that it overfits the seen data, memorizing them, when the performance in the test data is much lower than in the training data.</p></li>
+<li><p><strong>Underfitting</strong>: We say that the model is underfitting, that is, that it did not adjust to the seen data, when the performance is low even in the training data.</p></li>
+</ul>
+</section>
+<section id="evaluating-predictive-models">
+<h4>Evaluating Predictive Models<a class="headerlink" href="#evaluating-predictive-models" title="Link to this heading">#</a></h4>
+<p>We need to evaluate each technique according to the objective of the studied problem:</p>
+<ul class="simple">
+<li><p>The <strong>theoretical evaluation</strong> can be exposed, for example, by the inductive characteristics (bias and variance) of the applied models.</p></li>
+<li><p>The <strong>controlled experimental</strong> evaluation must follow clear and transparent assumptions and procedures in order to guarantee the validity of the created models.</p></li>
+<li><p><strong>Apparent error</strong>: Calculating the classification error on the same data used to train the model produces optimistic estimates, which is why it was agreed to call this the apparent error of the model.</p></li>
+<li><p>Sampling methods for estimating generalized error:</p>
+<ul>
+<li><p><strong>Holdout</strong>: A set of data is separated (e.g. 1/3) which are not used in training (derivation) of the model.</p>
+<ul>
+<li><p>Problems:</p>
+<ul>
+<li><p>Estimate is pessimistic</p></li>
+<li><p>Does not allow to evaluate the variability of performance with different combinations of the data</p></li>
+<li><p>How to choose the test set?</p></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><strong>Random sampling (random subsampling)</strong>: The holdout procedure is repeated several times, with equal proportions but random selection of the test set. Estimation of the error is aggregated (e.g. mean and standard deviation) from among the various test sets.</p>
+<ul>
+<li><p>Problems:</p>
+<ul>
+<li><p>It does not allow to evaluate performance in all existing cases (random selection does not guarantee that all cases have been used in a test set)</p></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><strong>K-folds Cross-validation</strong>: The data is divided into K sub-sets of equal size; K-1 are used for training, and the rest is the test set. The procedure is repeated K times, in order to use all the subsets as a test. Estimation of the error is aggregated (e.g. mean and standard deviation) from the predictions in the K test sets.</p>
+<ul>
+<li><p>Problems:</p>
+<ul>
+<li><p>A portion of the training data is shared between the different runs (i.e. not independent).</p></li>
+<li><p>Aggregate performance estimate is still dependent on the division made.</p></li>
+<li><p>How to divide the data by the K groups?</p></li>
+</ul>
+</li>
+<li><p>Specifications:</p>
+<ul>
+<li><p>It is usual to perform the complete procedure several times (M) to allow different definitions of the groups, with the estimate to be aggregated among all M * K executions</p></li>
+<li><p>It is usual to stratify the groups, i.e., to force that both the training set and the test set have similar class proportions</p></li>
+<li><p>There are several studies that discuss the validity of the method, namely with regard to the optimism / pessimism of each estimate.</p></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><strong>Leave-one-out Cross-validation</strong>: Equivalent to an N-folds cross validation, where N is the total number of cases in the set. Estimation of the error is aggregated in the N predictions made. Probably the most accurate estimate of the model’s performance.</p>
+<ul>
+<li><p>Problems:</p>
+<ul>
+<li><p>Computationally more demanding</p></li>
+<li><p>Usually used only in small data sets</p></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><strong>Bootstrap</strong>: Samples are drawn from the data set, with replacement, of the same size as the initial set, serving as training sets. Unchosen cases (~ 36.8%) serve as a test set. Procedure is repeated several times. The error estimate is aggregated from all iterations (equivalent to leave-one-out, but with less variance).</p>
+<ul>
+<li><p>Problems:</p>
+<ul>
+<li><p>Computationally more demanding</p></li>
+<li><p>Usually used only in small data sets</p></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
+</section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="index.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Welcome to HEADS LEARN</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="lesson02.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Lesson 02 - Supervised Machine Learning - Decision Trees</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ml-and-data-mining-start-your-engines">ML and Data Mining - Start your engines!</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#summary">Summary</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#learning-and-evaluating-classifiers-validation-and-generalization-of-models">Learning and evaluating classifiers - Validation and generalization of models</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Summary</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#model-generalization">Model Generalization</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#evaluating-predictive-models">Evaluating Predictive Models</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Mariana Canelas-Pais
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2024, Mariana Canelas-Pais.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/bootstrap.js?digest=bd9e20870c6007c4c509"></script>
+<script src="_static/scripts/pydata-sphinx-theme.js?digest=bd9e20870c6007c4c509"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

@@ -1,0 +1,4 @@
+"0","set.seed(7)"
+"0","training_indices <- createDataPartition(ds$Dx, p = 0.8, list = FALSE)"
+"0","training_data <- ds[training_indices, ]"
+"0","testing_data <- ds[-training_indices, ]"

@@ -1,0 +1,380 @@
+---
+title: "Analysis of Cervical Cancer Risk Factors"
+author: "Mariana Canelas Pais"
+date: "`r Sys.Date()`"
+output:
+  pdf_document: default
+  html_document:
+    df_print: paged
+---
+
+# Introduction
+
+Cervical cancer is one of the leading causes of cancer-related deaths among women worldwide. The early identification of associated risk factors can significantly contribute to the prevention and effective treatment of this disease. This report focuses on analyzing the dataset concerning cervical cancer risk factors made available by the UCI repository, collected at 'Hospital Universitario de Caracas' in Caracas, Venezuela. The dataset comprises demographic information, habits, and historic medical records of 858 patients. Some patients chose not to answer certain questions due to privacy concerns, leading to missing values in the dataset.
+
+## Dataset Characteristics
+
+The dataset is multivariate, covering the health and medicine domain, specifically aimed at classification tasks. It includes both integer and real feature types across various variables.
+
+## Variables Description
+
+The dataset contains the following variables, among others, providing a comprehensive overview of each patient's demographic background, habits, and medical history:
+
+- **Age** (int)
+- **Number of sexual partners** (int)
+- **First sexual intercourse** (int)
+- **Number of pregnancies** (int)
+- **Smokes** (bool)
+- **Smokes (years)** (bool)
+- **Smokes (packs/year)** (bool)
+- **Hormonal Contraceptives** (bool)
+- **Hormonal Contraceptives (years)** (int) contraceptives.
+- **IUD** (bool)
+- **IUD (years)** (int)
+- **STDs** (bool)
+- **STDs (number)** (int)
+- **STDs: condylomatosis** (bool)
+- **STDs: cervical condylomatosis** (bool)
+- **STDs: vaginal condylomatosis** (bool)
+- **STDs: vulvo-perineal condylomatosis** (bool)
+- **STDs: syphilis** (bool)
+- **STDs: pelvic inflammatory disease** (bool)
+- **STDs: genital herpes** (bool)
+- **STDs: molluscum contagiosum** (bool)
+- **STDs: AIDS** (bool)
+- **STDs: HIV** (bool)
+- **STDs: Hepatitis B** (bool)
+- **STDs: HPV** (bool)
+- **STDs: Number of diagnosis** (int)
+- **STDs: Time since first diagnosis** (int)
+- **STDs: Time since last diagnosis** (int)
+- **Dx:Cancer** (bool) - target variable
+- **Dx:CIN** (bool) - target variable
+- **Dx:HPV** (bool) - target variable
+- **Dx** (bool) - target variable
+- **Hinselmann** (bool) - target variable
+- **Schiller** (bool) - target variable
+- **Cytology** (bool) - target variable
+- **Biopsy** (bool) - target variable
+
+# Methods
+
+This analysis aims to accurately classify the presence of cervical cancer (`Dx:Cancer`), comparing the performance of single decision trees and random forests. The evaluation of derived models will follow a correct methodology, comparing different estimates of generalization error, such as holdout, cross-validation, and bootstrap methods.
+
+
+## Imports and Data Preparation
+
+To conduct this analysis, we will utilize several key packages within R, which are instrumental in building decision tree models, handling various aspects of data preparation, model training and evaluation, as well as visualization. Below is a brief overview of each package and its role in our analysis:
+- **rpart**: This package is used for creating decision tree models. It provides functions for building and plotting classification and regression trees.
+- **rpart.plot**: A companion to rpart, this package offers enhanced functionalities for visualizing decision trees, making it easier to interpret the model structure and decisions.
+- **caret**: The 'Classification And REgression Training' package is a comprehensive solution for model training. It offers a streamlined workflow for model tuning, training, and performance assessment across a wide range of predictive modeling techniques, including decision trees and random forests.
+- **ROSE**: 'Random OverSampling Examples' - ROSE is a tool for dealing with imbalanced dataset problems. 
+. **randomForest**: An ensemble method for classification and regression. The randomForest package allows us to build more robust models by creating a 'forest' of decision trees and aggregating their predictions.
+- **pROC**: Stands for 'Probabilistic ROC' which is essential for evaluating model performance, especially for binary classification problems. The pROC package provides tools for analyzing the performance of predictive models by calculating the area under the ROC (Receiver Operating Characteristic) curve among other functionalities.
+
+
+```{r}
+library(rpart)
+library(rpart.plot)
+library(caret)
+library(ROSE)
+library(randomForest)
+library(pROC)
+```
+
+
+## Reading the Dataset
+
+The dataset is loaded from a CSV file into an R dataframe for manipulation and analysis.
+
+```{r}
+fp <- "assignment_01/cervical.csv"
+ds <- read.csv(fp)
+```
+
+
+## Data Cleaning
+
+To ensure the quality and usability of the data, we perform several cleaning steps. This includes replacing "?" with NA for missing values, converting certain columns to factors to reflect their categorical nature, and transforming other columns to numeric types to enable quantitative analysis.
+
+### Handling Missing Values and Data Types
+First, we replace any "?" values with NA across specified columns, acknowledging the presence of missing data in both categorical and numeric fields.
+
+```{r}
+# List of columns to convert to factors
+col_to_factor <- c(
+  "Smokes",
+  "Hormonal.Contraceptives",
+  "IUD",
+  "STDs",
+  "STDs.condylomatosis",
+  "STDs.cervical.condylomatosis",
+  "STDs.vaginal.condylomatosis",
+  "STDs.vulvo.perineal.condylomatosis",
+  "STDs.syphilis",
+  "STDs.pelvic.inflammatory.disease",
+  "STDs.genital.herpes",
+  "STDs.molluscum.contagiosum",
+  "STDs.AIDS",
+  "STDs.HIV",
+  "STDs.Hepatitis.B",
+  "STDs.HPV",
+  "Dx.Cancer",
+  "Dx.CIN",
+  "Dx.HPV",
+  "Dx",
+  "Hinselmann",
+  "Schiller",
+  "Citology",
+  "Biopsy"
+)
+
+# List of columns to convert to numeric
+col_to_numeric <- c(
+  "Number.of.sexual.partners",
+  "First.sexual.intercourse",
+  "Num.of.pregnancies",
+  "Smokes..years.",
+  "Smokes..packs.year.",
+  "Hormonal.Contraceptives..years.",
+  "STDs..Number.of.diagnosis",
+  "STDs..Time.since.first.diagnosis",
+  "STDs..Time.since.last.diagnosis",
+  "IUD..years.",
+  "STDs..number."
+)
+
+# Replace "?" with NA and convert data types
+ds[c(col_to_factor, col_to_numeric)] <- lapply(ds[c(col_to_factor, col_to_numeric)], function(x) {
+  x[x == "?"] <- NA
+  return(x)
+})
+```
+
+## Converting Data Types
+
+After handling missing values, we convert the specified columns to their appropriate data types: factors for categorical variables and numeric for continuous variables.
+
+```{r}
+# Converting columns to factors
+ds[col_to_factor] <- lapply(ds[col_to_factor], factor)
+
+# Converting columns to numeric
+ds[col_to_numeric] <- lapply(ds[col_to_numeric], as.numeric)
+```
+
+## Adjusting Output Variable Category names
+
+```{r}
+ds$Dx.Cancer <- factor(ds$Dx.Cancer, 
+                       levels = levels(ds$Dx.Cancer),
+                       labels = make.names(levels(ds$Dx.Cancer), unique = TRUE))
+```
+
+
+## Renaming Columns
+
+To improve readability and simplify future references to the dataset columns, we rename them using a more consistent naming convention.
+
+```{r}
+# Renaming the columns for better readability
+names(ds) <- c("Age", "NumSexualPartners", "FirstSexualIntercoarse", "NumPregnancies", "Smokes", "SmokesYears", "SmokesPacksYear", "HormonalContraceptives", "HormonalContraceptivesYears", "IUD", "IUDYears", "STDs", "STDsNumber", "STDsCondylomatosis", "STDsCervicalCondylomatosis", "STDsVaginalCondylomatosis", "STDsVulvoPerinealCondylomatosis", "STDsSyphilis", "STDsPelvicInflammatoryDisease", "STDsGenitalHerpes", "STDsMolluscumContagiosum", "STDsAIDS", "STDsHIV", "STDsHepatitisB", "STDsHPV", "STDsNumDiagnosis", "STDsTimeSinceFirstDiagnosis", "STDsTimeSinceLastDiagnosis", "DxCancer", "DxCIN", "DxHPV", "Dx", "Hinselmann", "Schiller", "Citology", "Biopsy")
+```
+
+## Variable Exclusion
+
+To ensure the integrity of our analysis and prevent data leakage, we will remove variables that could introduce bias because they represent outcomes of diagnostics or are directly related to the target variable 'Dx.Cancer'.
+
+```{r}
+# Excluding target variables from the dataset
+ds <- ds[ , !(names(ds) %in% c("DxCIN", "DxHPV", "Dx", "Hinselmann", "Schiller", "Citology", "Biopsy"))]
+```
+
+In refining our dataset for the current exercise, we also undertook further variable selection to ensure our models rely on variables that provide meaningful, independent insights into the risk factors without being encumbered by redundant or potentially confusing information.
+
+- **Smokes (years)** and **Smokes (packs/year)**: Detailed smoking history variables were excluded in favor of a simpler binary indicator of smoking status. This decision is based on the aim to reduce model complexity and avoid multicollinearity, focusing on whether the patient smokes as the primary smoking-related risk factor.
+
+- **Hormonal Contraceptives (bool)** vs. **Hormonal Contraceptives (years)**: We chose to retain the duration of hormonal contraceptive use over the binary indicator of usage. 
+
+- **IUD (bool)** vs. **IUD (years)**: Similarly, the duration of IUD use was retained over the binary indicator. 
+
+- **STDs (bool)**, **STDs (number)** and **STDs: Number of diagnosis**: These variables were removed in favor of keeping the individual diagnosis status.
+
+Additionally, preliminary analysis revealed that certain variables, specifically **STDsCervicalCondylomatosis** and **STDsAIDS**, exhibited limited variability within our dataset, having only one category.
+
+```{r}
+# Removing other variables from the dataset
+ds <- ds[ , !(names(ds) %in% c("SmokesYears", "SmokesPacksYear", "HormonalContraceptives", "IUD", "STDs", "STDsNumber", "STDsNumDiagnosis", "STDsCervicalCondylomatosis", "STDsAIDS"))]
+```
+
+# Results
+
+In this analysis, we aimed to balance our dataset to address the significant class imbalance present and subsequently trained decision tree models using both Gini impurity and information gain as splitting criteria. Here we present the process and findings of our modeling efforts.
+
+## Balancing the Dataset
+
+First, we balanced the dataset using the ROSE package's over-sampling method to provide an equal representation of classes. This was crucial for improving our models' ability to learn from the minority class.
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+library(ROSE)
+set.seed(123)
+ds_balanced <- ovun.sample(DxCancer ~ ., data = ds, method = "both", p = 0.5, seed = 123, N = 1600)$data
+
+# Check the new distribution of the target variable
+table(ds_balanced$DxCancer)
+```
+
+## Creating a Holdout Validation Set
+
+For the correct evaluation of our models, we will hold out a portion of the dataset as a validation set. This allows us to assess the model's performance on unseen data, providing a more accurate estimate of its generalization error. We partition the balanced dataset into training and validation subsets, ensuring that both sets maintain a similar class distribution.
+
+```{r}
+# Create indices for a stratified training set, holding out 20% of the data for validation
+training.index <- createDataPartition(ds_balanced$DxCancer, p=0.8, list=FALSE)
+
+# Define the validation set
+validation <- ds_balanced[-training.index, ]
+
+# Define the training set
+training <- ds_balanced[training.index, ]
+
+# Check the distribution of the target variable in both sets to ensure stratification
+cat("Training set distribution of DxCancer:\n")
+table(training$DxCancer)
+
+cat("\nValidation set distribution of DxCancer:\n")
+table(validation$DxCancer)
+```
+
+
+## Model Training
+
+### Decision Tree with Gini Impurity
+
+We trained a decision tree model using Gini impurity as the criterion for making splits.
+
+```{r}
+tree.gini <- rpart(DxCancer ~ ., data = training, method = "class", 
+                   parms = list(split = "gini"), 
+                   control = rpart.control(cp = 0.001, minsplit = 1, maxdepth = 30))
+```
+
+### Decision Tree with Information Gain
+
+Similarly, we trained another model using information gain (entropy) as the split criterion.
+
+```{r}
+tree.information <- rpart(DxCancer ~ ., data=training,
+                          parms = list(split = "information"))
+```
+
+### Random Forest Model
+
+Next, we trained a Random Forest model on the same training set.
+
+```{r}
+rf.model <- randomForest(DxCancer ~ ., data=training, method="class", ntree=500, mtry=2, importance=TRUE)
+```
+
+## Model Summaries
+
+After fitting our decision tree models using the training data, we can summarize the results to understand the model's complexity, variable importance, and the decision-making process. Below, we present the summaries for both models trained with Gini impurity and information gain as splitting criteria.
+
+### Decision Tree Using Gini Impurity
+
+```{r}
+summary(tree.gini)
+```
+
+The Gini model summary indicates the complexity parameter (CP) used at each split, the number of splits (nsplit), the relative error of the model, and the cross-validated relative error (xerror). The most important variables for splitting in the Gini model include Age, FirstSexualIntercoarse, NumPregnancies, and NumSexualPartners, among others. The model attempted several splits, optimizing the CP to reduce overfitting while attempting to capture the complexity of the data.
+
+### Decision Tree Using Information Gain
+
+```{r}
+summary(tree.information)
+```
+
+The summary of the tree trained using information gain shows a similar structure, with the model highlighting the variable importance based on the information gain criterion. Variables like NumPregnancies, STDsHPV, Age, and IUDYears played significant roles in the model's decision-making process. This model also details the nodes, splits, and the primary and surrogate splits at each node, demonstrating how the model decides the predicted class.
+
+### Random Forest Model Summary
+
+The following code obtains a summary pertraining the Random Forest model.
+
+```{r}
+summary(rf.model)
+```
+
+The summary of the Random Forest model provides a comprehensive overview of the model's training process and its outcomes. Notably, the model was trained with a large number of decision trees (ntree), which collectively contribute to the final prediction through a majority vote mechanism. 
+
+From the output, the importance measures stand out as particularly insightful, highlighting the variables that play significant roles in the model's predictions. 
+
+## Visualization of Decision Trees
+
+Next, we visualize the structure of the trained decision trees to interpret the splits and leaf nodes.
+
+### Decision Tree Using Gini Impurity
+
+```{r}
+rpart.plot(tree.gini, main = "Decision Tree with Gini Index", type = 4, extra = 101)
+```
+
+### Decision Tree Using Information Gain
+```{r}
+rpart.plot(tree.information, main = "Decision Tree with Information Gain", type = 4, extra = 101)
+```
+
+
+## Model Evaluation
+
+Model evaluation will enable us to understand the performance and generalizability of our predictive models. 
+We employ repeated 10-fold cross-validation to evaluate the models, focusing on the ROC AUC as our primary metric. 
+
+### Setting Up Cross-Validation
+
+```{r}
+metric <- "ROC"
+control <- trainControl(method="repeatedcv", number=10,
+                        summaryFunction=twoClassSummary, 
+                        classProbs=TRUE,
+                        savePredictions = "final", repeats = 3)
+```
+
+### Evaluating Decision Tree Model with Gini Impurity
+
+```{r}
+fit.tree.gini.rcv <- train(DxCancer ~ ., data=training, method="rpart", metric=metric, trControl=control)
+```
+
+
+### Evaluating Random Forest Model
+
+```{r}
+fit.rf.rcv <- train(DxCancer ~ ., data=training, method="rf", metric=metric, trControl=control)
+```
+
+### Comparing Model Performance
+
+Now we summarize the accuracy of the models and visualize their ROC curves to compare their performance.
+
+```{r}
+fit.models <- list(Tree.Gini=fit.tree.gini.rcv, RF=fit.rf.rcv)
+results <- resamples(fit.models)
+summary(results)
+
+# Plotting ROC curve for model1
+numeric_obs_gini <- ifelse(as.character(fit.models$Tree.Gini$pred$obs) == "X1", 1, 0)
+roc(numeric_obs_gini, fit.models$Tree.Gini$pred$X1, plot = TRUE, main="ROC Curve for Gini Impurity", print.auc=TRUE)
+
+# Plotting ROC curve for model2
+numeric_obs_rf <- ifelse(as.character(fit.models$RF$pred$obs) == "X1", 1, 0)
+roc(numeric_obs_rf, fit.models$RF$pred$X1, plot = TRUE, main="ROC Curve for Random Forest", print.auc=TRUE)
+
+# Compare accuracy of models using dotplot
+dotplot(results)
+```
+
+# Discussion and Conclusion
+
+The analysis revealed that both the Gini-based decision tree and random forest models performed poorly (AUC of 0.499 and 0.493, respectively), with low sensitivity and specificity, indicating an inability to effectively discriminate between the classes. Further investigation into data quality, feature engineering, and alternative modeling approaches would be necessary to improve performance. However, due to contextual and time limitations, a deeper exploration was not feasible within the scope of this exercise.
+
+

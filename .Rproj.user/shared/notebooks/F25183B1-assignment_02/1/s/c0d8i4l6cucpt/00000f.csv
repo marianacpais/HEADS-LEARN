@@ -1,0 +1,3 @@
+"0","ds$Dx.Cancer <- factor(ds$Dx.Cancer, "
+"0","                       levels = levels(ds$Dx.Cancer),"
+"0","                       labels = make.names(levels(ds$Dx.Cancer), unique = TRUE))"

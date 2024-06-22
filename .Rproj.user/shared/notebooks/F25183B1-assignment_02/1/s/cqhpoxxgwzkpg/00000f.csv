@@ -1,0 +1,2 @@
+"0","fp <- ""../data/cervical.csv"""
+"0","ds <- read.csv(fp)"

@@ -1,0 +1,5 @@
+"0","# Converting columns to factors"
+"0","ds[col_to_factor] <- lapply(ds[col_to_factor], factor)"
+"0",""
+"0","# Converting columns to numeric"
+"0","ds[col_to_numeric] <- lapply(ds[col_to_numeric], as.numeric)"

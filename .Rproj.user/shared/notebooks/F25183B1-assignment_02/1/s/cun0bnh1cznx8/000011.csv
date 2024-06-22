@@ -1,0 +1,6 @@
+"0","# Remove NAs"
+"0","training_data_cleaned <- na.omit(training_data)"
+"0",""
+"0","# Remove constant variables from the dataset"
+"0","constant_vars <- sapply(training_data_cleaned, function(x) length(unique(x))) == 1"
+"0","training_data_cleaned <- training_data_cleaned[, !constant_vars]"

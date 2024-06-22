@@ -1,0 +1,3 @@
+"0","# Final selection of variables for the current analysis"
+"0","ds <- ds[ , (names(ds) %in% c(""Dx"", ""Age"", ""NumSexualPartners"", ""FirstSexualIntercoarse"", ""NumPregnancies"", ""SmokesPacksYear"", ""HormonalContraceptivesYears"", ""IUDYears"", ""STDsNumDiagnosis""))]"
+"0",""
