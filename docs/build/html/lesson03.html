@@ -290,7 +290,9 @@ document.write(`
   </button>
 `);
 </script>
-
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
 </div></div>
       
     </div>
@@ -306,6 +308,20 @@ document.write(`
     <div id="print-main-content">
         <div id="jb-print-toc">
             
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#summary">Summary</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">Introduction</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#qualitative-model">Qualitative Model</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#quantitative-model">Quantitative Model</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#learning-structure-from-data">Learning Structure from data</a></li>
+</ul>
+</li>
+</ul>
+            </nav>
         </div>
     </div>
 </div>
@@ -317,6 +333,179 @@ document.write(`
                   
   <section id="lesson-03-graphical-models-bayesian-networks">
 <h1>Lesson 03 - Graphical Models - Bayesian Networks<a class="headerlink" href="#lesson-03-graphical-models-bayesian-networks" title="Link to this heading">#</a></h1>
+<section id="summary">
+<h2>Summary<a class="headerlink" href="#summary" title="Link to this heading">#</a></h2>
+<section id="introduction">
+<h3>Introduction<a class="headerlink" href="#introduction" title="Link to this heading">#</a></h3>
+<p>“Bayesian statistical methods allow taking into account prior knowledge when analyzing data, turning the data analysis a process of updating that prior knowledge with biomedical and health-care evidence” Lucas P. (2004)</p>
+<p>“Bayesian networks offer a general and versatile approach to capturing and reasoning with uncertainty in medicine and health care.” Lucas P. (2004)</p>
+<p>“Each variable is a node in the network, and its dependency defined by their ascendants in the network, quantified by a conditional probability table.” Darwiche A. (2010)</p>
+<ul class="simple">
+<li><p>Consist of</p>
+<ul>
+<li><p>Qualitative model (structure)</p>
+<ul>
+<li><p>variables (nodes)</p></li>
+<li><p>dependencies between variables (edges)</p></li>
+</ul>
+</li>
+<li><p>Quantitative model (parameters)</p>
+<ul>
+<li><p>conditional probabilities for each variable state</p></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="qualitative-model">
+<h3>Qualitative Model<a class="headerlink" href="#qualitative-model" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Defined by experts</p></li>
+<li><p>Categorical variables are included, considering three groups:</p>
+<ul>
+<li><p>Theories: risk or conditioning factors (e.g. smoking)</p></li>
+<li><p>Hypotheses: study outcomes (e.g. SARS diagnosis)</p></li>
+<li><p>Observations: symptoms or measurements (e.g. fever)</p></li>
+</ul>
+</li>
+<li><p>Dependencies are defined by the expert, taking causality into account:</p>
+<ul>
+<li><p>Exposition → Outcome (e.g. smoking “causes” heart attack)</p></li>
+<li><p>Outcome → Symtom (e.g. SARS “causes” dyspnoea)</p></li>
+</ul>
+</li>
+<li><p>Interpreting the qualitative model</p>
+<ul>
+<li><p>When defined automatically from data, the quantitative model CANNOT be interpreted as a causal model!</p></li>
+<li><p>Dependencies are interpreted as association only.</p></li>
+<li><p>Direction (A → B) indicates that having information on the conditioning (A) gives more information on the conditioned (B) than the reverse.</p></li>
+<li><p>Inexistence of a dependency is a clear assumption of independence.</p></li>
+<li><p>But the model can be adjusted manualy after being created from the data! e.g. reversing an edge direction</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="quantitative-model">
+<h3>Quantitative Model<a class="headerlink" href="#quantitative-model" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Conditional probabilities at each node</p></li>
+<li><p>Defined by:</p>
+<ul>
+<li><p>Expert (subjectively)</p>
+<ul>
+<li><p>e.g. physician estimates that 1/3 of the patients is older than 65</p></li>
+</ul>
+</li>
+<li><p>Theories known in literature (e.g. meta-analysis)</p>
+<ul>
+<li><p>e.g. prevalence of obstructive sleep apnea is 4% in men and 2% in women</p></li>
+</ul>
+</li>
+<li><p>Data from an original study</p>
+<ul>
+<li><p>e.g. proportion of cases with dyspnoea among SARS patients</p></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>Interpreting the quantitative model</p>
+<ul>
+<li><p>When defined by an expert, it is based on a low level of evidence.</p></li>
+<li><p>When defined by published theories, it is based on a high level of evidence.</p></li>
+<li><p>When defined by an original study, it should be evaluated according to the study design:</p>
+<ul>
+<li><p>Cohort: represents risks if the variable being conditioned was not controled (outcome included); otherwise, information interpretable as association.</p></li>
+<li><p>Case-control: represents risks if the variable being conditioned was not controled (outcome excluded); otherwise, information interpretable as association.</p></li>
+<li><p>Clinical trials: represents risks according to the randomization or information interpretable as association, for example, if sample stratification was made.</p></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>Interpreting resulting probabilities</p>
+<ul>
+<li><p>When no evidence is included in the network:</p>
+<ul>
+<li><p>Probabilities are the marginal probabilities for each category, considering the dependencies of the multivariate model - a priori risk</p></li>
+</ul>
+</li>
+<li><p>When evidence is included in the network:</p>
+<ul>
+<li><p>Probabilities are the marginal probabilites for the subgroups of patients defined by the evidence, considering the entire multivariate model – a posteriori risk</p></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="learning-structure-from-data">
+<h3>Learning Structure from data<a class="headerlink" href="#learning-structure-from-data" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p><strong>Search-and-score methods</strong>:</p>
+<ul>
+<li><p>search algorithm: select subset of (high-quality) BNs</p></li>
+<li><p>quality measure (score): decide which one of the (candidate) networks is the best</p></li>
+<li><p><strong>Defined from data (hill-climbing)</strong>:</p>
+<ol class="arabic simple">
+<li><p>Start with no dependencies</p></li>
+<li><p>Compute the likelihood of observing the data given the model</p></li>
+<li><p>Test all possible single dependencies, computing the respective likelihood of the data</p></li>
+<li><p>If the likelihood increases above a given threshold, insert that dependency in the model</p></li>
+<li><p>Go to 3, until threshold is not reached by any new dependency</p></li>
+</ol>
+</li>
+</ul>
+</li>
+<li><p><strong>Constraint-based structure learning</strong>:</p>
+<ul>
+<li><p>identifies ADG structure that best encodes a set of conditional dependence and independence assumptions</p></li>
+</ul>
+</li>
+<li><p><strong>The classifier approach</strong></p>
+<ul>
+<li><p>“I don’t care if the OR for wine drinking and myocardial infaction is of risk (&gt;1) or protection (&lt;1), or even if it is 1.2 or 12; I care that I can use that info to discriminate between patients who will develop the disease and those who won’t!”</p></li>
+<li><p>While research often focus on finding (accurate) estimates of association between factors and outcomes (e.g. OR, RR, …), there is no certainty that a model thereby defined will act as a good classifier.</p></li>
+<li><p>Classification is a basic task in data analysis and pattern recognition that requires the construction of a classifier, that is, a function that assigns a class label to instances described by a set of attributes.</p></li>
+<li><p><strong>Naive Bayes classifier</strong></p>
+<ul>
+<li><p>One of the most effective classifiers, in the sense that its predictive performance is competitive with state-of-theart classifiers, is the so-called naive Bayesian classifier.</p></li>
+<li><p>This classifier learns from data the conditional probability of each attribute Fi given the outcome O (in similar approach as case-control studies study the odds of exposure given the outcome).</p></li>
+<li><p>Classification is then done by applying the Bayes rule to compute P(O | f).</p></li>
+<li><p>This computation makes a strong independence assumption:</p>
+<ul>
+<li><p>all the attributes are conditionally independent given the value of the outcome. By independence we mean probabilistic independence, that is, A is independent of B given C whenever P(A | B , C) = P(A | C) for all possible values of A, B and C, whenever P(C) &gt; 0</p></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><strong>Augmenting the Naive Bayes classifier</strong></p>
+<ul>
+<li><p>Interdependencies between attributes can be addressed directly by allowing an attribute to depend on other non-class attributes.</p></li>
+<li><p>However, techniques for learning unrestricted Bayesian networks oſten fail to deliver lower zero-one loss than naive Bayes!</p>
+<ul>
+<li><p>One possible reason for this is that full Bayesian networks are oriented toward optimizing the likelihood of the training data rather than the conditional likelihood of the class attribute given a full set of other attributes.</p></li>
+<li><p>Another possible reason is that full Bayesian networks have high variance due to the large number of parameters estimated.</p></li>
+<li><p>An intermediate alternative technique is to use a less restrict structure than naive Bayes.</p></li>
+</ul>
+</li>
+<li><p><strong>Tree-Augmented Naive Bayes classifier</strong></p>
+<ul>
+<li><p>Tree augmented naive Bayes is a semi-naive Bayesian Learning method.</p></li>
+<li><p>It relaxes the naive Bayes attribute independence assumption by employing a tree structure, in which each attribute only depends on the class and one other attribute.</p></li>
+<li><p>A maximum weighted spanning tree that maximizes the likelihood of the training data is used.</p></li>
+<li><p>Chow and Liu (1968) proposed a method that efficiently constructs a maximum weighted spanning tree which maximizes the likelihood that the training data was generated from the tree.</p></li>
+<li><p>The weight of an edge in the tree is the mutual information of the two attributes connected by the edge. TAN extends this method by using conditional mutual information as weights.</p></li>
+<li><p>Due to the relaxed attribute independence assumption, TAN considerably reduces the bias of naive Bayes at the cost of an increase in variance.</p></li>
+<li><p>Empirical results show that it substantially reduces zero-one loss of naive Bayes on many data sets and that of all data sets examined it achieves lower zero-one loss than naive Bayes more oſten than not.</p></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
 </section>
 
 
@@ -355,7 +544,26 @@ document.write(`
             
             
               
-                <div class="bd-sidebar-secondary bd-toc"></div>
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#summary">Summary</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">Introduction</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#qualitative-model">Qualitative Model</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#quantitative-model">Quantitative Model</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#learning-structure-from-data">Learning Structure from data</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
               
             
           </div>

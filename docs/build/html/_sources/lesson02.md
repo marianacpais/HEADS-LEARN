@@ -56,7 +56,7 @@ Entropy:
 ![alt text](_static/image_2.1.png)
 
 Information gain:
-![alt text](_static/image_2.2_.png)
+![alt text](_static/image_2.2.png)
 
 Information gain ratio:
 ![alt text](_static/image_2.3.png)
