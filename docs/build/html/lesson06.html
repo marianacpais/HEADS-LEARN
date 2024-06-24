@@ -290,7 +290,9 @@ document.write(`
   </button>
 `);
 </script>
-
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
 </div></div>
       
     </div>
@@ -306,6 +308,19 @@ document.write(`
     <div id="print-main-content">
         <div id="jb-print-toc">
             
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#summary">Summary</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#bagging">Bagging</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#boosting">Boosting</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#stacking">Stacking</a></li>
+</ul>
+</li>
+</ul>
+            </nav>
         </div>
     </div>
 </div>
@@ -317,6 +332,73 @@ document.write(`
                   
   <section id="lesson-06-ensemble-models-bagging-boosting-and-reliability">
 <h1>Lesson 06 - Ensemble Models - Bagging, Boosting and Reliability<a class="headerlink" href="#lesson-06-ensemble-models-bagging-boosting-and-reliability" title="Link to this heading">#</a></h1>
+<section id="summary">
+<h2>Summary<a class="headerlink" href="#summary" title="Link to this heading">#</a></h2>
+<p>“Ensemble methods aim at improving the predictive performance of a given statistical learning or model fitting technique.” Buhlmann (2012)</p>
+<p>“The general principle of ensemble methods is to construct a linear combination of some model fitting method, instead of using a single fit of the method.” Buhlmann (2012)</p>
+<section id="bagging">
+<h3>Bagging<a class="headerlink" href="#bagging" title="Link to this heading">#</a></h3>
+<p>Bootstrap aggregating is an ensemble method for improving unstable estimation or classification schemes.
+Introduced as a variance reduction mechanism for methods that do variable selection and fitting in a linear model.
+Popular due to it simplicity and popularity of bootstrap methods.
+Breiman (1996)</p>
+<p><strong>Algorithm</strong>:</p>
+<ol class="arabic simple">
+<li><p>Create a bootstrapped sample of same size as original sample.</p></li>
+<li><p>Compute the bootstrapped estimator (e.g. model derivation and error)</p></li>
+<li><p>Repeat steps 1 and 2, M times, usually M = 50 or 100.
+The bagged estimator is the average of all estimators (if M = inf then we would have an expected value for the estimator).
+The finite number M in practice governs the accuracy of the Monte Carlo approximation but otherwise, it shouldn’t be viewed as a tuning parameter for bagging.</p></li>
+</ol>
+<p>For classification, two options apply:</p>
+<ul class="simple">
+<li><p>Compute the average of computed probabilities of each model</p></li>
+<li><p>Majority voting (proposed by Breiman)
+Bagging improves predictive performance of classification and regression trees.
+It is worth pointing out that bagging a decision tree is almost never worse (in terms of predictive power) than a single tree.</p></li>
+</ul>
+<p><strong>Variants:</strong></p>
+<ul class="simple">
+<li><p>Subagging: Subsample aggregating</p></li>
+<li><p>Bragging: Bootstrap robust aggregating</p></li>
+</ul>
+<p><strong>Disadvantages:</strong></p>
+<ul class="simple">
+<li><p>The main disadvantage of bagging, and other ensemble algorithms, is the lack of interpretation.</p></li>
+<li><p>A linear combination of decision trees is much harder to interpret than a single tree.</p></li>
+<li><p>Likewise bagging a variable selection-fitting algorithm for linear models gives little clues which of the predictor variables are actually important.</p></li>
+</ul>
+</section>
+<section id="boosting">
+<h3>Boosting<a class="headerlink" href="#boosting" title="Link to this heading">#</a></h3>
+<p>Unlike bagging, which is a parallel ensemble method, boosting methods are sequential ensemble algorithms where the weights given to learned examples depend on the previous fitted functions.
+Boosting has been empirically demonstrated to be very accurate in terms of classification (e.
+g. AdaBoost algorithm)</p>
+<p>Schapire (1990) and Freund (1995)</p>
+<p>Boosting algorithms have often better predictive power than bagging.
+For all data-sets tested by Breiman, boosting trees was better than a single classification tree.
+The biggest loss for boosting in comparison with bagging was for a data-set with very low misclassification error.</p>
+<p>Breiman (1998)</p>
+<p><strong>Algorithm:</strong></p>
+<ol class="arabic simple">
+<li><p>Learn the base model with the data</p></li>
+<li><p>Compute the gradient vector (loss function attributed to each case)</p></li>
+<li><p>Repeat 1 and 2 with weighted data according to its error contribution</p></li>
+</ol>
+<p>The key idea is to give more weight to instances for which the error is higher, to improve the model in that direction.</p>
+</section>
+<section id="stacking">
+<h3>Stacking<a class="headerlink" href="#stacking" title="Link to this heading">#</a></h3>
+<p>Stacking works by combining heterogeneous models learned on the same original data set.</p>
+<p>After learning the desired models, the outputs of the single models are combined using
+another model which takes them as inputs.</p>
+<p>For example:</p>
+<ul class="simple">
+<li><p>Learn a decision tree, a k-nn and an SVM with the data</p></li>
+<li><p>Stack the outputs of the three models using a linear model</p></li>
+</ul>
+</section>
+</section>
 </section>
 
 
@@ -355,7 +437,25 @@ document.write(`
             
             
               
-                <div class="bd-sidebar-secondary bd-toc"></div>
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#summary">Summary</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#bagging">Bagging</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#boosting">Boosting</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#stacking">Stacking</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
               
             
           </div>

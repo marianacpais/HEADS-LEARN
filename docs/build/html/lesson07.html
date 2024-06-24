@@ -290,7 +290,9 @@ document.write(`
   </button>
 `);
 </script>
-
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
 </div></div>
       
     </div>
@@ -306,6 +308,24 @@ document.write(`
     <div id="print-main-content">
         <div id="jb-print-toc">
             
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#summary">Summary</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#unsupervised-learning">Unsupervised Learning</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#regras-de-associacao">Regras de Associação</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#classificacao-automatica">Classificação Automática</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#algoritmos">Algoritmos</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#variantes">Variantes</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#agrupamento-hierarquico">Agrupamento Hierárquico</a></li>
+</ul>
+</li>
+</ul>
+            </nav>
         </div>
     </div>
 </div>
@@ -317,6 +337,279 @@ document.write(`
                   
   <section id="lesson-07-unsupervised-machine-learning-clustering-and-association-rules">
 <h1>Lesson 07 - Unsupervised Machine Learning - Clustering and Association Rules<a class="headerlink" href="#lesson-07-unsupervised-machine-learning-clustering-and-association-rules" title="Link to this heading">#</a></h1>
+<section id="summary">
+<h2>Summary<a class="headerlink" href="#summary" title="Link to this heading">#</a></h2>
+<section id="unsupervised-learning">
+<h3>Unsupervised Learning<a class="headerlink" href="#unsupervised-learning" title="Link to this heading">#</a></h3>
+<p>O paradigma de aprendizagem supervisionada pressupõe a seguinte metáfora:</p>
+<ul class="simple">
+<li><p>existe um professor que ensina o sistema algo sobre o conceito a aprender; e</p></li>
+<li><p>o aluno consegue então classificar casos novos;</p></li>
+<li><p>existe uma função de erro de classificação dos casos novos.
+Nem sempre a extração de conhecimento tem como objetivo um conceito sobre o qual se pretende classificar os casos observados.</p></li>
+<li><p>Aprendizagem Supervisionada</p>
+<ul>
+<li><p>Objectivo: aprender características da probabilidade condicional</p></li>
+</ul>
+</li>
+<li><p>Aprendizagem Não supervisionada</p>
+<ul>
+<li><p>Objectivo: aprender características da probabilidade</p></li>
+</ul>
+</li>
+</ul>
+<p>A dimensão de X é, normalmente, muito superior em problemas não supervisionados do que em problemas supervisionados.
+No entanto, X representa todas as variáveis em estudo, não sendo por isso necessário perceber como varia P(X) em função de outras variáveis (como nos problemas supervisionados).
+De qualquer forma, a elevada dimensionalidade do problema obriga à utilização de métodos descritivos muito simples.</p>
+<p>Habitualmente: procuramos regiões de X onde P(X) seja elevada.</p>
+<p>Por exemplo:</p>
+<ul class="simple">
+<li><p>Componentes principais tentam encontrar subconjuntos de baixa dimensão com reduzida probabilidade que definem fronteiras de zonas com alta probabilidade.</p></li>
+<li><p>Análise de agrupamentos tenta encontrar múltiplas regiões convexas de probabilidade semelhante.</p></li>
+<li><p>Regras de associação tentam encontrar descrições sumárias de regiões com elevada densidade.</p></li>
+</ul>
+</section>
+<section id="regras-de-associacao">
+<h3>Regras de Associação<a class="headerlink" href="#regras-de-associacao" title="Link to this heading">#</a></h3>
+<p>Objectivo: encontrar valores conjuntos de X que ocorram frequentemente na base de dados. Habitualmente aplicado a variáveis binárias, denominando-se assim ‘market basket analysis’ (que itens foram comprados).</p>
+<p>Para cada observação, cada variável Xj pode tomar um de dois valores:</p>
+<ul class="simple">
+<li><p>1, se o item foi comprado nesta transação;</p></li>
+<li><p>0, caso contrário.
+Os itens que têm frequentemente valores conjuntos de 1 são habitualmente comprados em conjunto (associados).</p></li>
+<li><p>De uma forma geral, queremos encontrar um conjunto de valores v para as variáveis, de tal forma que a probabilidade conjunta P(v) seja relativamente elevada, procurando as modas conjuntas dos dados.</p></li>
+<li><p>Mas com um número elevado de variáveis, e de valores possíveis para cada variável, o problema torna-se intratável.</p></li>
+<li><p>Em vez de procurarmos os valores v tal que P(v) seja elevada, procuramos regiões do espaço de X com elevada probabilidade relativamente ao seu tamanho e suporte.</p></li>
+<li><p>Tamanho do subconjunto:</p>
+<ul>
+<li><p>Número de variáveis consideradas no subconjunto</p></li>
+</ul>
+</li>
+<li><p>Suporte (ou prevalência) do subconjunto:</p>
+<ul>
+<li><p>Proporção de casos que verificam o subconjunto</p></li>
+</ul>
+</li>
+<li><p>Podemos procurar subconjuntos limitados por:</p>
+<ul>
+<li><p>um determinado tamanho máximo; e/ou</p></li>
+<li><p>um determinado suporte mínimo (definindo conjuntos frequentes).</p></li>
+</ul>
+</li>
+</ul>
+<p><strong>Regras de Associação - APRIORI</strong></p>
+<p>Objectivo: encontrar os subconjuntos frequentes.</p>
+<p>Se o limite de suporte for elevado o suficiente, reduzindo o número de conjuntos possíveis, a sua obtenção é computacionalmente exequível. Seja t o limite para o suporte, o algoritmo Apriori tira partido de duas características:</p>
+<ul class="simple">
+<li><p>a cardinalidade do conjunto com suporte &gt; t é pequena; e</p></li>
+<li><p>um conjunto B que tenha apenas um subconjunto das variáveis do conjunto A terá sempre suporte igual ou superior ao de A.</p></li>
+</ul>
+<p>Ou seja, para encontrar os conjuntos frequentes de tamanho m apenas consideramos candidatos cujos ascendentes de tamanho m-1 sejam frequentes.</p>
+<p>Algoritmo:</p>
+<ul class="simple">
+<li><p>Na primeira leitura dos dados calcula-se o suporte dos subconjuntos de tamanho 1 (uma variável), e exclui-se os que tenham suporte inferior a t.</p></li>
+<li><p>Na segunda leitura dos dados calcula-se o suporte dos subconjuntos de tamanho 2 que possam ser criados por pares dos conjuntos anteriormente aceites, e excluem-se os que tenham suporte inferior a t.</p></li>
+<li><p>Aplica-se sucessivamente até que não existam candidatos com suporte superior a t.</p></li>
+<li><p>Se o conjunto de dados for grande mas esparso, o algoritmo termina em pouco tempo.</p></li>
+</ul>
+<p>Os conjuntos frequentes são então incluídos num grupo de
+<strong>Regras de associação</strong>
+Se um conjunto tiver várias variáveis positivas (e.g. sexo=masculino, fumador=sim, dislipidemia=sim), elas são divididas em dois conjuntos disjuntos (A e B), e escreve-se
+A =&gt; B
+A é o antecedente e B o consequente, e cada um pode conter uma conjunção de várias variáveis, não necessariamente com significado causal (e.g. enfarte pode aparecer no antecedente e sexo no consequente).</p>
+<p>O suporte da regra T(A=&gt;B) é o suporte do subconjunto encontrado anteriormente.</p>
+<ul class="simple">
+<li><p>estimativa da probabilidade P(A e B)
+A confiança da regra C(A=&gt;B) é o suporte dividido pelo suporte do antecedente C(A=&gt;B) = T(A=&gt;B) / T(A)</p></li>
+<li><p>estimativa da probabilidade condicional P(B|A)
+O lift da regra L(A=&gt;B) é a confiança dividida pela confiança esperada (suporte do consequente) L(A=&gt;B) = C(A=&gt;B) / T(B)</p></li>
+<li><p>estimativa da medida de associação P(A e B) / [P(A) P(B)]</p></li>
+</ul>
+<p>Exemplo
+Subconjunto {sexo=masculino, fumador=sim, dislipidemia=sim} e a regra {sexo=masculino, fumador=sim} =&gt; dislipidemia=sim
+Um valor de suporte de 0.03 significa que a o subconjunto aparece em 3% dos casos observados.
+Uma confiança de 0.82 significa que, quando observamos indivíduos do sexo masculino e fumadores, então em
+82% dos casos eles têm dislipidemia.
+Se 43% dos casos tiverem dislipidemia, então o lift da regra seria 1.91.</p>
+<p><img alt="alt text" src="_static/image_7.1.png" /></p>
+<p>Como definir o antecendente (A) e o consequente (B)?</p>
+<ul class="simple">
+<li><p>Procuramos regras com elevado suporte e confiança.</p></li>
+<li><p>O algoritmo dá-nos as regras com suporte acima do limite t e confiança acima de outro limite c. {A=&gt;B | T(A=&gt;B)&gt;t &amp; C(A=&gt;B)&gt;c}
+Podemos procurar apenas as regras que tenham o consequente desejado.</p></li>
+</ul>
+<p>Problemas</p>
+<ul class="simple">
+<li><p>Formato restritivo dos dados.</p></li>
+<li><p>Limite de suporte é necessário para computabilidade da procura.</p></li>
+<li><p>Regras com elevada confiança ou lift, mas baixo suporte, nunca serão encontrados</p></li>
+<li><p>e.g. procurar reacções adversas no consequente.</p></li>
+</ul>
+</section>
+<section id="classificacao-automatica">
+<h3>Classificação Automática<a class="headerlink" href="#classificacao-automatica" title="Link to this heading">#</a></h3>
+<p><strong>Análise de Clusters</strong></p>
+<p>Objectivo: segmentar X em K grupos (clusters) de objectos (instâncias) tal que objectos no mesmo grupo sejam mais semelhantes entre si do que objectos em grupos diferentes.
+Por vezes interessa encontrar também a hierarquia de grupos, ou simplesmente definir se X pode ser descrito por grupos ou não.
+Os objectos podem ser descritos por si ou pelas distâncias para outros objectos.
+As medidas de semelhança/distância dependem do tipo de dados (contínuos, discretos, etc.).</p>
+<p>Semelhança: medida de proximidade (ou distância) entre instâncias de X
+A semelhança entre objectos define os grupos:</p>
+<ul class="simple">
+<li><p>medidas diferentes originam agrupamentos diferentes.
+A qualidade de uma definição de clusters pode ser medida pela distância final entre os objectos (dentro e fora) dos clusters.</p></li>
+<li><p>semelhante a uma função de erro em aprendizagem supervisionada.</p></li>
+</ul>
+<p>Exemplo: conjunto artificial bidimensional de dados, X, agrupados com K-Means (k=3):</p>
+<ol class="arabic simple">
+<li><p>escolhe-se k centróides aleatoriamente;</p></li>
+<li><p>cada ponto restante é atribuído ao cluster com centróide mais próximo (distância Euclideana);</p></li>
+<li><p>recalcula-se os centróides com base nos pontos de cada cluster;</p></li>
+<li><p>repete-se 2 e 3 enquanto houver mudança de pontos por cluster.</p></li>
+</ol>
+<p><strong>Matrizes de Proximidade</strong></p>
+<p>Muitas vezes os dados são recolhidos como distâncias entre objectos
+e.g. não se sabe a localização exacta de um sensor, mas sim a distância a que ele se encontra de outros sensores.</p>
+<p>Estes dados são guardados em matrizes NxN, possivelmente simétricas com diagonal zero.
+A maior parte dos algoritmos de clustering opera nestas matrizes.
+Nem sempre se verifica a desigualdade triangular, pelo que estas medidas de (dis)semelhança não são verdadeiras distâncias.</p>
+<p><strong>Distâncias baseadas em atributos</strong></p>
+<p>Na maior parte dos casos, teremos as medições de cada objecto.
+A matriz de dissemelhança pode então ser calculada usando as distâncias entre pares de pontos.
+Normalmente calcula-se a distância entre duas instâncias A e B, para cada atributo separadamente, d(A,B), e depois soma-se as distâncias de cada atributo para obter a distância final entre as duas instâncias D(A,B)
+O mais comum em variáveis contínuas é usar-se a soma dos quadrados, mas é possível ter de dar pesos diferentes aos atributos, ou usar outras distâncias caso o tipo de variável assim o obrigue.</p>
+<p><strong>Distância de objectos</strong></p>
+<p>Ao calcular a distância entre objectos, diferentes atributos têm diferentes influências.
+Surge, por vezes, a necessidade de pesar os atributos de acordo com a sua influência:
+e.g. não permitir que os grupos acabem por ser definidos devido apenas a um atributo muito
+influente.
+Uma forma de limitar é atribuir, na soma das distâncias, um peso a cada atributo, e.g. dividir pela distância média observada, nesse atributo, nos dados</p>
+<p>Claro que nem sempre é desejável normalizar os atributos!
+Se o objectivo é segmentar os dados em grupos de objectos semelhantes, então uma variação pequena num atributo pode significar uma dissemelhança maior entre instâncias, do que uma variação grande noutro atributo
+e.g. valor de uma análise realizada vs idade
+Se o objectivo é encontrar grupos naturais de objectos semelhantes, então convém dar mais peso aos atributos que melhor distingam esses grupos, optimizando o resultado obtido</p>
+<p><img alt="alt text" src="_static/image_7.2.png" /></p>
+<p>O tratamento de dados omissos é muito importante:</p>
+<ul class="simple">
+<li><p>devemos eliminar da análise as instâncias onde existem dados omissos?</p></li>
+<li><p>devemos imputar os casos omissos com valores médios ou medianos?</p></li>
+<li><p>consideramos dois objectos semelhantes, em relação a um atributo, se estes tiverem um valor omisso nesse atributo?</p></li>
+<li><p>dois objectos, ambos omissos relativamente a um atributo, são iguais nessa dimensão?</p></li>
+</ul>
+<p>A definição da medida de distância correcta para cada problema é muito mais importante do que a escolha do algoritmo de clustering.</p>
+</section>
+<section id="algoritmos">
+<h3>Algoritmos<a class="headerlink" href="#algoritmos" title="Link to this heading">#</a></h3>
+<p><strong>Algoritmos de Clustering</strong></p>
+<p>Pretendem encontrar grupos de objectos onde a semelhança intra-clusters seja superior à semelhança interclusters.</p>
+<p>Podem ser de 3 tipos:</p>
+<ul class="simple">
+<li><p>Combinatórios (ou de partição) - trabalham sobre os dados, sem informação subjacente de probabilidade.</p></li>
+<li><p>Modelos mistos - assumem que os dados são produzidos i.i.d. de acordo com uma distribuição de probabilidade por componentes (cada componente, um cluster).</p></li>
+<li><p>Procura de modas</p></li>
+</ul>
+<p><strong>Algoritmos de Combinatórios</strong></p>
+<p>Definem uma codificação de X → K, tal que a cada objecto de X é atribuído um de K clusters.
+O objecHvo destes algoritmos é minimizar uma medida de erro, que define quão longe está o clustering ópHmo de ser encontrado.
+Só que este problema de opHmização é NP-diPcil! (pelo menos tão diPcil como os mais diPceis NP)
+A maior parte dos algoritmos usa uma estratégia de descida gulosa do gradiente.</p>
+<p><strong>K-means</strong></p>
+<p>Mais famoso algoritmo de clustering de descida iterativa do gradiente, para</p>
+<ul class="simple">
+<li><p>variáveis contínuas, e</p></li>
+<li><p>distância Euclideana.
+Como cada passo do algoritmo minimiza a distância intra-cluster, o algoritmo converge (mas para um mínimo local).</p></li>
+</ul>
+<p>Para prevenir os mínimos locais, podemos:</p>
+<ul class="simple">
+<li><p>inicializar o algoritmo com diferentes valores para os centróides, e usar o resultado final que minimize as distâncias.</p></li>
+</ul>
+<ol class="arabic simple">
+<li><p>escolhe-se k centróides aleatoriamente;</p></li>
+<li><p>cada ponto restante é atribuído ao cluster com centróide mais próximo (distância Euclideana);</p></li>
+<li><p>recalcula-se os centróides com base nos pontos de cada cluster;</p></li>
+<li><p>repete-se 2 e 3 enquanto houver mudança de pontos por cluster.</p></li>
+</ol>
+<section id="variantes">
+<h4>Variantes<a class="headerlink" href="#variantes" title="Link to this heading">#</a></h4>
+<p><strong>Soft K-means (EM)</strong></p>
+<p>K-means é muito semelhante a estimar uma densidade de probabilidade baseada em misturas de Gaussianas.</p>
+<p>Expectation-Maximization</p>
+<ul class="simple">
+<li><p>Passo E: define-se as responsabilidade de cada cluster para cada objecto.</p></li>
+<li><p>Passo M: recalcula-se as densidades de cada componente baseadas nas responsabilidades actuais.</p></li>
+<li><p>Itera-se os dois passos enquanto a variação for superior a um limite.</p></li>
+<li><p>O algoritmo define uma atribuição probabilística de objectos a clusters.</p></li>
+</ul>
+<p><strong>K-medoids</strong></p>
+<ul class="simple">
+<li><p>K-means tem como limitações, entre outras:</p>
+<ul>
+<li><p>aplicar-se apenas a variáveis quantitativas;</p></li>
+<li><p>usar a distância Euclideana, que dá mais peso aos atributos com valores superiores de distância.</p></li>
+</ul>
+</li>
+<li><p>Podemos melhorar estas limitações, à custa de mais computação:</p>
+<ul>
+<li><p>em vez de calcular médias para cada atributo (centróide) escolhemos o objecto que minimiza a distância intra-cluster (medóide);</p></li>
+<li><p>podemos, então, usar qualquer medida de distância entre os objectos.</p></li>
+</ul>
+</li>
+<li><p>Enquanto cada iteração do k-means é O(KN), cada iteração do k-medoids é O(KN2)</p></li>
+</ul>
+</section>
+</section>
+<section id="agrupamento-hierarquico">
+<h3>Agrupamento Hierárquico<a class="headerlink" href="#agrupamento-hierarquico" title="Link to this heading">#</a></h3>
+<p>Em vez de procurarmos um número K de clusters podemos ver como se define a hierarquia.
+Cada cluster num nível superior da hierarquia é composto agregando clusters do nível mais baixo seguinte na hierarquia.</p>
+<ul class="simple">
+<li><p>No nível inferior, cada cluster tem apenas uma instância.</p></li>
+<li><p>No nível superior, um cluster tem todas as instâncias.</p></li>
+</ul>
+<p>Estratégias:</p>
+<ul class="simple">
+<li><p>Aglomerativa (bottom-up)</p></li>
+<li><p>Divisiva (top-down)</p></li>
+</ul>
+<p><strong>Aglomerativa</strong></p>
+<ul class="simple">
+<li><p>No nível inferior, cada cluster tem apenas uma instância.</p></li>
+<li><p>Os dois grupos com menor distância inter-cluster são agregados.</p></li>
+<li><p>Sucessivamente, vão sendo agregados os grupos resultantes.</p></li>
+</ul>
+<p><strong>Divisiva</strong></p>
+<ul class="simple">
+<li><p>No nível superior, um cluster tem todas as instâncias.</p></li>
+<li><p>O cluster com maior distância intra-cluster é dividido de forma a produzir dois grupos com maior distância inter-cluster.</p></li>
+<li><p>Sucessivamente, vão sendo divididos os grupos resultantes.</p></li>
+</ul>
+<p>Distância entre os clusters:</p>
+<ul class="simple">
+<li><p>Average linkage</p>
+<ul>
+<li><p>Distância média entre dois objectos, um de cada cluster.</p></li>
+<li><p>Compromisso entre as outras duas medidas, tende a encontrar grupos relativamente bem separados e relativamente
+compactos.</p></li>
+</ul>
+</li>
+<li><p>Complete linkage</p>
+<ul>
+<li><p>Distância entre os dois objectos mais distantes, um de cada cluster.</p></li>
+<li><p>Clusters com pontos muito afastados são considerados afastados, tendendo a produzir clusters compactos mas muito pequenos, podendo quebrar a regra de “proximidade” (que diz que os pontos de um cluster deverão ser mais próximos de outros pontos desse cluster do que de pontos de outros clusters).</p></li>
+</ul>
+</li>
+<li><p>Single linkage</p>
+<ul>
+<li><p>Distância entre os dois objectos mais próximos, um de cada cluster.
+Quando os dados estão naturalmente bem segmentados em clusters compactos, todas as três medidas dão bons resultados.</p></li>
+<li><p>Clusters com pontos próximos são considerados próximos, tendendo a produzir clusters grandes mas pouco compactos, podendo quebrar a regra de “compactação” (os pontos de um cluster tendem a ser semelhantes uns aos outros).</p></li>
+</ul>
+</li>
+</ul>
+<p><img alt="alt text" src="_static/image_7.3.png" /></p>
+</section>
+</section>
 </section>
 
 
@@ -355,7 +648,30 @@ document.write(`
             
             
               
-                <div class="bd-sidebar-secondary bd-toc"></div>
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#summary">Summary</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#unsupervised-learning">Unsupervised Learning</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#regras-de-associacao">Regras de Associação</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#classificacao-automatica">Classificação Automática</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#algoritmos">Algoritmos</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#variantes">Variantes</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#agrupamento-hierarquico">Agrupamento Hierárquico</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
               
             
           </div>
