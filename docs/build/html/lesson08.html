@@ -290,7 +290,9 @@ document.write(`
   </button>
 `);
 </script>
-
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
 </div></div>
       
     </div>
@@ -306,6 +308,14 @@ document.write(`
     <div id="print-main-content">
         <div id="jb-print-toc">
             
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#summary">Summary</a></li>
+</ul>
+            </nav>
         </div>
     </div>
 </div>
@@ -317,6 +327,27 @@ document.write(`
                   
   <section id="lesson-08-unsupervised-machine-learning-data-preprocessing-and-anomaly-detection">
 <h1>Lesson 08 - Unsupervised Machine Learning - Data Preprocessing and Anomaly Detection<a class="headerlink" href="#lesson-08-unsupervised-machine-learning-data-preprocessing-and-anomaly-detection" title="Link to this heading">#</a></h1>
+<section id="summary">
+<h2>Summary<a class="headerlink" href="#summary" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p>CRISP-DM</p></li>
+<li><p>There are basically 3 approaches to sampling:</p>
+<ul>
+<li><p>Simple random sampling (with or without replacement)</p></li>
+<li><p>Stratified sampling (e.g., relative to class, maintaining the same number of objects for each class, or maintaining the same proportion of objects from the original set)</p></li>
+<li><p>Progressive sampling (progressively increasing the sample size as long as the accuracy rate continues to improve; usually this approach provides a good estimate for the sample size)</p></li>
+</ul>
+</li>
+<li><p>Anomaly detection approaches</p>
+<ul>
+<li><p>Type 1 – Determine the outliers with no prior knowledge of the data; essentially a learning approach analogous to unsupervised clustering</p></li>
+<li><p>Type 2 – Model both normality and abnormality; approach analogous to supervised classification and requires pre-labelled data, tagged as normal or abnormal</p></li>
+<li><p>Type 3 – Model only normality or in a very few cases model abnormality; analogous to a semi-supervised recognition or detection task</p></li>
+</ul>
+</li>
+<li><p>Types of missing data: A) Missing completely at random; B) Missing at random; C) Missing not at random</p></li>
+</ul>
+</section>
 </section>
 
 
@@ -355,7 +386,20 @@ document.write(`
             
             
               
-                <div class="bd-sidebar-secondary bd-toc"></div>
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#summary">Summary</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
               
             
           </div>

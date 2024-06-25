@@ -2,6 +2,23 @@
 
 ## Summary
 
+### Dúvidas/revisões necessárias
+
+- Expectation-Maximization
+
+### Conceitos
+
+- Algoritmo APRIORI
+- Antecedente e consequente
+- Suporte de uma regra
+- Confiança de uma regra
+- Lift de uma regra
+- Tipos de algoritmos de clustering: A) combinatórios ou de partipação; B) Mistos; C) Procura de modas
+- Estatística Gap
+- Estratégias de agrupamento hierárquico: A) Aglomerativa (Bottom-up); B) Divisiva (Top-down)
+- Dendograma
+- Medicação da distância entre clusters (para agrupamento hierárquico): A) Complete linkage; B) Average Linkage; C) Single Linkage
+
 ### Unsupervised Learning
 
 O paradigma de aprendizagem supervisionada pressupõe a seguinte metáfora:

@@ -1,5 +1,12 @@
 # Lesson 01 - Your First ML project in R
 
+## Summary
+
+### Conceitos
+
+- Biases included in the Inductive bias: A) Representation Bias; B) Search Bias
+- CRISP-DM
+
 ## ML and Data Mining - Start your engines!
 
 ### Summary

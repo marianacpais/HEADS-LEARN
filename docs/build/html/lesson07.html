@@ -314,6 +314,8 @@ document.write(`
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#summary">Summary</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#duvidas-revisoes-necessarias">Dúvidas/revisões necessárias</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#conceitos">Conceitos</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#unsupervised-learning">Unsupervised Learning</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#regras-de-associacao">Regras de Associação</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#classificacao-automatica">Classificação Automática</a></li>
@@ -339,6 +341,27 @@ document.write(`
 <h1>Lesson 07 - Unsupervised Machine Learning - Clustering and Association Rules<a class="headerlink" href="#lesson-07-unsupervised-machine-learning-clustering-and-association-rules" title="Link to this heading">#</a></h1>
 <section id="summary">
 <h2>Summary<a class="headerlink" href="#summary" title="Link to this heading">#</a></h2>
+<section id="duvidas-revisoes-necessarias">
+<h3>Dúvidas/revisões necessárias<a class="headerlink" href="#duvidas-revisoes-necessarias" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Expectation-Maximization</p></li>
+</ul>
+</section>
+<section id="conceitos">
+<h3>Conceitos<a class="headerlink" href="#conceitos" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Algoritmo APRIORI</p></li>
+<li><p>Antecedente e consequente</p></li>
+<li><p>Suporte de uma regra</p></li>
+<li><p>Confiança de uma regra</p></li>
+<li><p>Lift de uma regra</p></li>
+<li><p>Tipos de algoritmos de clustering: A) combinatórios ou de partipação; B) Mistos; C) Procura de modas</p></li>
+<li><p>Estatística Gap</p></li>
+<li><p>Estratégias de agrupamento hierárquico: A) Aglomerativa (Bottom-up); B) Divisiva (Top-down)</p></li>
+<li><p>Dendograma</p></li>
+<li><p>Medicação da distância entre clusters (para agrupamento hierárquico): A) Complete linkage; B) Average Linkage; C) Single Linkage</p></li>
+</ul>
+</section>
 <section id="unsupervised-learning">
 <h3>Unsupervised Learning<a class="headerlink" href="#unsupervised-learning" title="Link to this heading">#</a></h3>
 <p>O paradigma de aprendizagem supervisionada pressupõe a seguinte metáfora:</p>
@@ -431,7 +454,7 @@ Um valor de suporte de 0.03 significa que a o subconjunto aparece em 3% dos caso
 Uma confiança de 0.82 significa que, quando observamos indivíduos do sexo masculino e fumadores, então em
 82% dos casos eles têm dislipidemia.
 Se 43% dos casos tiverem dislipidemia, então o lift da regra seria 1.91.</p>
-<p><img alt="alt text" src="_static/image_7.1.png" /></p>
+<p><img alt="alt text" src="_images/image_7.1.png" /></p>
 <p>Como definir o antecendente (A) e o consequente (B)?</p>
 <ul class="simple">
 <li><p>Procuramos regras com elevado suporte e confiança.</p></li>
@@ -488,7 +511,7 @@ Uma forma de limitar é atribuir, na soma das distâncias, um peso a cada atribu
 Se o objectivo é segmentar os dados em grupos de objectos semelhantes, então uma variação pequena num atributo pode significar uma dissemelhança maior entre instâncias, do que uma variação grande noutro atributo
 e.g. valor de uma análise realizada vs idade
 Se o objectivo é encontrar grupos naturais de objectos semelhantes, então convém dar mais peso aos atributos que melhor distingam esses grupos, optimizando o resultado obtido</p>
-<p><img alt="alt text" src="_static/image_7.2.png" /></p>
+<p><img alt="alt text" src="_images/image_7.2.png" /></p>
 <p>O tratamento de dados omissos é muito importante:</p>
 <ul class="simple">
 <li><p>devemos eliminar da análise as instâncias onde existem dados omissos?</p></li>
@@ -607,7 +630,7 @@ Quando os dados estão naturalmente bem segmentados em clusters compactos, todas
 </ul>
 </li>
 </ul>
-<p><img alt="alt text" src="_static/image_7.3.png" /></p>
+<p><img alt="alt text" src="_images/image_7.3.png" /></p>
 </section>
 </section>
 </section>
@@ -658,6 +681,8 @@ Quando os dados estão naturalmente bem segmentados em clusters compactos, todas
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#summary">Summary</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#duvidas-revisoes-necessarias">Dúvidas/revisões necessárias</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#conceitos">Conceitos</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#unsupervised-learning">Unsupervised Learning</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#regras-de-associacao">Regras de Associação</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#classificacao-automatica">Classificação Automática</a></li>

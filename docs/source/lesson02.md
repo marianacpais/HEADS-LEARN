@@ -1,5 +1,17 @@
 # Lesson 02 - Supervised Machine Learning - Decision Trees
 
+## Conceitos
+
+- **Appropriate Problems for Decision Tree Learning**:
+  - Instances are represented by attribute-value pairs
+  - The target function has discrete output values
+  - Disjunctive descriptions may be required
+  - The training data may contain errors
+  - The training data may contain missing attribute values
+- ID3 Algorithm
+- C4.5
+- CART
+
 ## Summary
 
 - **Decision Tree Learning**: “Method for approximating discrete-valued target functions, in which the learned function is represented by a decision tree.” Mitchell T.(1997)
